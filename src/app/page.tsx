@@ -1,100 +1,74 @@
+
 export default function Home() {
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        Home
-        {/* <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div> */}
-      </main>
-      {/* <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer> */}
-    </div>
+    <div className="w-full">
+
+    {/* Hero Section */}
+    <section className="hero bg-white text-center py-20 px-6 flex flex-col md:flex-row items-center justify-center gap-10">
+      <div className="text-left max-w-lg">
+        <h1 className="text-4xl font-bold">
+          Learn <span className="text-blue-600">Sign Language</span> the Fun Way!
+        </h1>
+        <p className="text-gray-600 mt-4">
+          Master sign language with AI-powered lessons and real-time feedback.
+        </p>
+        <button className="mt-6 px-6 py-3 bg-blue-500 text-white rounded-full text-lg">
+          Get Started
+        </button>
+      </div>
+      {/* Placeholder for Image */}
+      <div className="bg-gray-300 w-72 h-40 rounded-lg"></div>
+    </section>
+
+    {/* Key Features Section */}
+    <section className="bg-blue-600 text-white py-16 px-6 text-center">
+      <h2 className="text-3xl font-bold mb-8">Key Features</h2>
+      <div className="flex flex-col md:flex-row justify-center gap-6">
+        {/* Feature 1 */}
+        <div className="bg-white text-black p-6 rounded-lg shadow-md w-80">
+          <div className="text-2xl">🖥️</div>
+          <h3 className="text-xl font-bold mt-2">Real-Time Feedback</h3>
+          <p className="text-gray-600 mt-2">
+            Get instant feedback on your signs using AI-powered webcam detection. Learn and improve in real-time!
+          </p>
+        </div>
+        {/* Feature 2 */}
+        <div className="bg-white text-black p-6 rounded-lg shadow-md w-80">
+          <div className="text-2xl">🎮</div>
+          <h3 className="text-xl font-bold mt-2">Gamified Learning</h3>
+          <p className="text-gray-600 mt-2">
+            Earn points, unlock badges, and level up as you master new signs. Learning has never been this fun!
+          </p>
+        </div>
+        {/* Feature 3 */}
+        <div className="bg-white text-black p-6 rounded-lg shadow-md w-80">
+          <div className="text-2xl">📊</div>
+          <h3 className="text-xl font-bold mt-2">Track Your Progress</h3>
+          <p className="text-gray-600 mt-2">
+            Monitor your growth with progress bars and stats. Set goals and celebrate every milestone!
+          </p>
+        </div>
+      </div>
+    </section>
+
+    {/* Awards & Progress Section */}
+    <section className="py-16 px-6 flex flex-col md:flex-row items-center gap-10">
+      {/* Placeholder for Image */}
+      <div className="bg-gray-300 w-72 h-40 rounded-lg"></div>
+      <div className="text-left max-w-lg">
+        <h2 className="text-3xl font-bold">
+          Earn <span className="text-blue-600">Awards</span> & Celebrate Your <span className="text-blue-600">Progress</span>!
+        </h2>
+        <p className="text-gray-600 mt-4">
+          Unlock badges, trophies, and special achievements as you advance through lessons. Whether it’s mastering your first signs or dominating challenges, every milestone comes with a reward to keep you motivated and excited to learn!
+        </p>
+      </div>
+    </section>
+  </div>
+
+
+
+
   );
 }
