@@ -84,6 +84,20 @@ export default function Home() {
           </p>
         </div>
       </section>
+
+            {/* Footer Section */}
+            <footer className="bg-gray-800 text-white py-8">
+        <div className="max-w-screen-xl mx-auto text-center">
+          <p className="text-lg">© 2025 s[AI]gn. All rights reserved.</p>
+          <div className="mt-4">
+            <a href="#" className="mx-4 text-blue-400 hover:text-blue-600">Privacy Policy</a>
+            <a href="#" className="mx-4 text-blue-400 hover:text-blue-600">Terms of Service</a>
+            <a href="#" className="mx-4 text-blue-400 hover:text-blue-600">Contact Us</a>
+          </div>
+        </div>
+      </footer>
+
+
   </div>
 
 
