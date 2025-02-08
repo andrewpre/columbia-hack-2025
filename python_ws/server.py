@@ -2,65 +2,65 @@ import asyncio
 import websockets
 import base64
 import json
-from fastapi import FastAPI, WebSocket, WebSocketDisconnect
 from PIL import Image
 import numpy as np
-import mediapipe as mp
+import tensorflow as tf
 from io import BytesIO
 
-# Initialize MediaPipe hand detection
-mp_hands = mp.solutions.hands
-hands = mp_hands.Hands(min_detection_confidence=0.5, min_tracking_confidence=0.5)
+# Load the saved model
+model_dir = "/Volumes/Passport_HD/columbia-hack-2025/python_ws/american-sign-language-tensorflow2-american-sign-language-v1"
+model = tf.saved_model.load(model_dir)
 
-# FastAPI app
-app = FastAPI()
+# Check the model's signatures and output names
+print("Available signatures:", model.signatures.keys())
+signature = model.signatures['serving_default']
+print("Output names:", signature.structured_outputs)
 
-# Function to process the image and extract the hand
-def extract_hand_from_image(image_data: bytes) -> bytes:
+# Function to preprocess image and make it compatible with the model input
+def preprocess_image(image_data: bytes):
     # Load the image
     image = Image.open(BytesIO(image_data))
     
-    # Convert image to RGB (MediaPipe needs RGB)
-    image_rgb = np.array(image.convert('RGB'))
+    # Convert to RGB (if not already in RGB)
+    image = image.convert('RGB')
+
+    # Resize the image to the required size for the model (224x224)
+    image = image.resize((224, 224))
+
+    # Convert the image to a numpy array and normalize it (if needed)
+    image_np = np.array(image) / 255.0  # Normalize the image to [0, 1]
     
-    # Process the image to detect hands
-    results = hands.process(image_rgb)
-
-    if results.multi_hand_landmarks:
-        for landmarks in results.multi_hand_landmarks:
-            # Get the bounding box for the hand (from landmarks)
-            min_x = min([landmark.x for landmark in landmarks.landmark])
-            max_x = max([landmark.x for landmark in landmarks.landmark])
-            min_y = min([landmark.y for landmark in landmarks.landmark])
-            max_y = max([landmark.y for landmark in landmarks.landmark])
-
-            # Convert the normalized coordinates to pixel values
-            width, height = image.size
-            min_x_pixel = int(min_x * width)
-            max_x_pixel = int(max_x * width)
-            min_y_pixel = int(min_y * height)
-            max_y_pixel = int(max_y * height)
-
-            # Crop the hand region from the image
-            hand_image = image.crop((min_x_pixel, min_y_pixel, max_x_pixel, max_y_pixel))
-
-            # Resize the cropped image to 30x30px
-            hand_image_resized = hand_image.resize((30, 30))
-
-            # Save the image as a byte array
-            byte_io = BytesIO()
-            hand_image_resized.save(byte_io, format="PNG")
-            return byte_io.getvalue()
+    # Add batch dimension (model expects a batch of images)
+    image_np = np.expand_dims(image_np, axis=0)
     
-    return None  # Return None if no hand is detected
+    return image_np
 
+# Function to classify the hand sign
+def classify_hand_sign(image_bytes: bytes):
+    # Preprocess the image
+    image_np = preprocess_image(image_bytes)
+
+    # Perform inference using the TensorFlow model
+    predictions = model.signatures['serving_default'](tf.convert_to_tensor(image_np, dtype=tf.float32))
+
+    # Access the output layer ('dense_1') which contains the probabilities for each class
+    output = predictions['dense_1']
+    
+    # The output will be a vector of probabilities for each class (shape: [1, 29])
+    predicted_class = np.argmax(output.numpy(), axis=1)  # Get the index of the max probability
+
+    # List of labels for American Sign Language (A-Z, etc.)
+    sign_language_labels = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'Del', 'Ok', 'Please']
+
+    # Map the predicted class index to a label
+    predicted_label = sign_language_labels[predicted_class.item()]
+
+    return predicted_label
 
 # WebSocket handler for image processing
-async def websocket_handler(websocket: WebSocket):
-    await websocket.accept()
+async def websocket_handler(websocket):
     try:
-        while True:
-            message = await websocket.receive_text()
+        async for message in websocket:
             print("Received message:", message)
             # Expecting a base64 encoded image
             data = json.loads(message)
@@ -68,29 +68,23 @@ async def websocket_handler(websocket: WebSocket):
                 # Decode the base64 image data
                 image_data = base64.b64decode(data['image'])
 
-                # Extract the hand from the image and resize it
-                hand_image_bytes = extract_hand_from_image(image_data)
+                # Classify the hand image using the TensorFlow model
+                predicted_sign = classify_hand_sign(image_data)
 
-                if hand_image_bytes:
-                    # Return the hand image as a base64 encoded PNG
-                    hand_image_base64 = base64.b64encode(hand_image_bytes).decode('utf-8')
-                    result = {'hand_image': hand_image_base64}
-                else:
-                    result = {'error': 'No hand detected in the image.'}
-
-                # Send the result back to the client
-                await websocket.send_text(json.dumps(result))
-    except WebSocketDisconnect:
+                # Return the predicted sign language letter
+                result = {'predicted_sign': predicted_sign}
+                await websocket.send(json.dumps(result))
+    except Exception as e:
+        print(f"Error: {e}")
+    finally:
         print("Client disconnected")
 
+# Start the WebSocket server
+async def start_server():
+    async with websockets.serve(websocket_handler, "localhost", 8000):
+        print("WebSocket server started on ws://localhost:8000")
+        await asyncio.Future()  # Keep the server running
 
-# FastAPI route to start the WebSocket server
-@app.websocket("/ws")
-async def websocket_endpoint(websocket: WebSocket):
-    await websocket_handler(websocket)
-
-
-# Run the FastAPI app with uvicorn
+# Run the event loop
 if __name__ == "__main__":
-    import uvicorn
-    uvicorn.run(app, host="localhost", port=8000)
+    asyncio.run(start_server())
