@@ -19,6 +19,8 @@ export default function Home() {
       </div>
       {/* Placeholder for Image */}
       <div className="bg-gray-300 w-72 h-40 rounded-lg"></div>
+
+      
     </section>
 
     {/* Key Features Section */}
