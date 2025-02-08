@@ -4,20 +4,24 @@ export default function Home() {
 
     <div className="w-full">
 
+
+
     {/* Hero Section */}
-    <section className="hero bg-white text-center py-16 px-6 flex flex-col md:flex-row items-center justify-center gap-12">
+    <section className="hero bg-white text-center py-8 px-6 flex flex-col md:flex-row items-center justify-center gap-12">
       <div className="text-left max-w-lg">
-        <h1 className="text-4xl font-bold">
+        <h1 className="text-5xl font-bold leading-[1.2]">
           Learn <span className="text-blue-600">Sign Language</span> the Fun Way!
         </h1>
-        <p className="text-gray-600 mt-6 text-2xl">
+        <p className="text-gray-600 mt-8 text-2xl">
           Master sign language with AI-powered lessons and real-time feedback.
         </p>
 
-      <div className="flex justify-center mt-8">
-        <button className="px-14 py-3 bg-blue-500 text-white rounded-full text-lg">
-          Get Started
-        </button>
+      <div className="flex mt-12">
+      <button className="px-14 py-3 bg-blue-500 text-white rounded-full text-lg hover:bg-blue-600 hover:scale-105 transition-transform duration-300">
+         Get Started
+      </button>
+
+        
       </div>
 
       </div>
