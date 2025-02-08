@@ -633,20 +633,17 @@ video {
 .h-4 {
   height: 1rem;
 }
-.h-40 {
-  height: 10rem;
-}
 .h-8 {
   height: 2rem;
 }
 .h-9 {
   height: 2.25rem;
 }
-.h-px {
-  height: 1px;
-}
 .h-auto {
   height: auto;
+}
+.h-px {
+  height: 1px;
 }
 .min-h-screen {
   min-height: 100vh;
@@ -663,20 +660,17 @@ video {
 .w-4 {
   width: 1rem;
 }
-.w-72 {
-  width: 18rem;
-}
 .w-8 {
   width: 2rem;
 }
 .w-80 {
   width: 20rem;
 }
-.w-full {
-  width: 100%;
-}
 .w-96 {
   width: 24rem;
+}
+.w-full {
+  width: 100%;
 }
 .min-w-\[8rem\] {
   min-width: 8rem;
@@ -717,8 +711,8 @@ video {
 .justify-items-center {
   justify-items: center;
 }
-.gap-10 {
-  gap: 2.5rem;
+.gap-12 {
+  gap: 3rem;
 }
 .gap-16 {
   gap: 4rem;
@@ -734,9 +728,6 @@ video {
 }
 .gap-8 {
   gap: 2rem;
-}
-.gap-12 {
-  gap: 3rem;
 }
 .overflow-hidden {
   overflow: hidden;
@@ -805,10 +796,6 @@ video {
 .bg-foreground {
   background-color: hsl(var(--foreground));
 }
-.bg-gray-300 {
-  --tw-bg-opacity: 1;
-  background-color: rgb(209 213 219 / var(--tw-bg-opacity, 1));
-}
 .bg-muted {
   background-color: hsl(var(--muted));
 }
@@ -843,6 +830,10 @@ video {
 .px-1 {
   padding-left: 0.25rem;
   padding-right: 0.25rem;
+}
+.px-14 {
+  padding-left: 3.5rem;
+  padding-right: 3.5rem;
 }
 .px-2 {
   padding-left: 0.5rem;
@@ -884,17 +875,9 @@ video {
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
 }
-.py-20 {
-  padding-top: 5rem;
-  padding-bottom: 5rem;
-}
 .py-3 {
   padding-top: 0.75rem;
   padding-bottom: 0.75rem;
-}
-.px-14 {
-  padding-left: 3.5rem;
-  padding-right: 3.5rem;
 }
 .pb-20 {
   padding-bottom: 5rem;
