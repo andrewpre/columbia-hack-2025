@@ -14,7 +14,7 @@ import { redirect } from "next/navigation";
 
 export function Header() {
   // const { data: session, status } = useSession();
-  const status = "unauthenticated";
+  const status = "authenticated";
 
   return (
     <header className="px-4 lg:px-6 h-14 flex items-center">
@@ -45,9 +45,9 @@ export function Header() {
           <>
             <Link
               className="text-sm font-medium hover:underline underline-offset-4"
-              href="/game"
+              href="/"
             >
-              Play
+              Authenticated Tab
             </Link>
           </>
         )}
