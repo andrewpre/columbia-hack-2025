@@ -22,7 +22,6 @@ export default function Home() {
 
       </div>
 
-        {/* Hero Image */}
         <div className="w-96 h-auto">
           <img
             src="/hero-image.jpg"
@@ -86,8 +85,6 @@ export default function Home() {
         </div>
       </section>
   </div>
-
-
 
 
   );
