@@ -29,9 +29,9 @@ export default function Course() {
     getUser().then((data) => {
       setUser(data);
     });
-    addUserXp().then((data) => {
-      console.log(data);
-    });
+    // addUserXp().then((data) => {
+    //   console.log(data);
+    // });
 
   }, []);
   useEffect(() => {
