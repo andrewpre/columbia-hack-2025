@@ -10,15 +10,16 @@ export const registerUser = asyncHandler(async (req, res) => {
     throw new Error("Please add all fields");
   }
 
-  if (password.length < 6) {
+  const emailExists = await User.findOne({ email });
+  if (emailExists) {
     res.status(400);
-    throw new Error("Password must be at least 6 characters");
+    throw new Error("User with this email already exists.");
   }
 
-  const userExists = await User.findOne({ email });
-  if (userExists) {
+  const usernameExists = await User.findOne({ username });
+  if (usernameExists) {
     res.status(400);
-    throw new Error("User already exists");
+    throw new Error("Username is already taken. Please choose another one.");
   }
 
   try {
@@ -29,14 +30,27 @@ export const registerUser = asyncHandler(async (req, res) => {
       dateCreated: new Date(),
       level: 1,
       currentXp: 0,
-      trophies: new Map(),
-      completedTrophies: new Map(),
+      trophies: {
+        "Intro to Sign Language": false,
+        "Finger Spelling": false,
+        "Basic Phrases": false,
+        "Numbers & Counting": false,
+        "Common Gestures": false,
+        "Novice Learner": false,
+        "Advanced Scholar": false,
+        "Level 5 Achiever": false,
+        "Level 10 Master": false,
+        "XP Champion": false,
+      },
+      completedTrophies: {},
     });
 
-    res.status(201).json(user);
+    res.status(201).json({ userId: user._id });
   } catch (error) {
-    res.status(500);
-    throw new Error("Server error. Could not register user.");
+    res.status(500).json({
+      message: "Server error. Could not register user.",
+      error: error.message,
+    });
   }
 });
 
@@ -46,17 +60,17 @@ export const loginUser = asyncHandler(async (req, res) => {
 
   if (!email || !password) {
     res.status(400);
-    throw new Error("Please add all fields");
+    throw new Error("Please add email and password");
   }
 
-  const user = await User.findOne({ email, password });
+  const user = await User.findOne({ email });
 
-  if (!user) {
-    res.status(400);
+  if (!user || !(await user.matchPassword(password))) {
+    res.status(401);
     throw new Error("Invalid email or password");
   }
 
-  res.status(200).json(user);
+  res.status(200).json({ userId: user._id });
 });
 
 // ✅ Get User Profile
@@ -84,6 +98,10 @@ export const getUser = asyncHandler(async (req, res) => {
 
 // ✅ Logout User
 export const logoutUser = asyncHandler(async (req, res) => {
+  res.cookie("jwt", "", {
+    httpOnly: true,
+    expires: new Date(0),
+  });
   res.status(200).json({ message: "User logged out successfully" });
 });
 
