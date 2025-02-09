@@ -5,7 +5,6 @@ export default function Home() {
     <div className="w-full">
 
 
-
     {/* Hero Section */}
     <section className="hero bg-white text-center py-8 px-6 flex flex-col md:flex-row items-center justify-center gap-12">
       <div className="text-left max-w-lg">
@@ -41,24 +40,24 @@ export default function Home() {
         <h2 className="text-3xl font-bold mb-8">Key Features</h2>
         <div className="flex flex-col md:flex-row justify-center gap-6">
           {/* Feature 1 */}
-          <div className="bg-white text-black p-6 rounded-xl shadow-md w-80">
-            <div className="text-2xl">🖥️</div>
+          <div className="bg-white text-black p-6 rounded-xl shadow-md w-80 hover:scale-105 hover:shadow-xl transition-transform duration-300">
+          <div className="text-2xl">🖥️</div>
             <h3 className="text-xl font-bold mt-2">Real-Time Feedback</h3>
             <p className="text-gray-600 mt-2">
               Get instant feedback on your signs using AI-powered webcam detection. Learn and improve in real-time!
             </p>
           </div>
           {/* Feature 2 */}
-          <div className="bg-white text-black p-6 rounded-xl shadow-md w-80">
-            <div className="text-2xl">🎮</div>
+          <div className="bg-white text-black p-6 rounded-xl shadow-md w-80 hover:scale-105 hover:shadow-xl transition-transform duration-300">
+          <div className="text-2xl">🎮</div>
             <h3 className="text-xl font-bold mt-2">Gamified Learning</h3>
             <p className="text-gray-600 mt-2">
               Earn points, unlock badges, and level up as you master new signs. Learning has never been this fun!
             </p>
           </div>
           {/* Feature 3 */}
-          <div className="bg-white text-black p-6 rounded-xl shadow-md w-80">
-            <div className="text-2xl">📊</div>
+          <div className="bg-white text-black p-6 rounded-xl shadow-md w-80 hover:scale-105 hover:shadow-xl transition-transform duration-300">
+          <div className="text-2xl">📊</div>
             <h3 className="text-xl font-bold mt-2">Track Your Progress</h3>
             <p className="text-gray-600 mt-2">
               Monitor your growth with progress bars and stats. Set goals and celebrate every milestone!

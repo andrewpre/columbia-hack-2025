@@ -11,22 +11,21 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { redirect } from "next/navigation";
-import Image from "next/image"; // Import Image component
+import Image from "next/image"; 
 
 export function Header() {
-  const status = "unauthenticated"; // Simulated status for the example
+  const status = "unauthenticated"; 
 
   return (
     <header className="bg-white shadow-md p-6 flex justify-between items-center">
-      {/* Left Section: Logo + Navbar */}
+
       <div className="flex items-center gap-8">
-        {/* Logo with Image */}
         <Link href="#" className="flex items-center gap-2">
           <Image
-            src="/saign_logo.svg" // Path to the logo image in the public folder
+            src="/saign_logo.svg" 
             alt="s[A]ign Logo"
-            width={45} // Adjust width as needed
-            height={15} // Adjust height as needed
+            width={45} 
+            height={15} 
           />
           <span className="text-2xl font-bold text-blue-600">s[AI]gn</span>
         </Link>
@@ -63,7 +62,6 @@ export function Header() {
         </nav>
       </div>
 
-      {/* Right Section: Auth Buttons or User Menu */}
       <div className="flex gap-4">
         {status === "unauthenticated" ? (
           <>
