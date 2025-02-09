@@ -11,21 +11,20 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { redirect } from "next/navigation";
-import Image from "next/image"; 
+import Image from "next/image";
 
 export function Header() {
-  const status = "unauthenticated"; 
+  const status = "unauthenticated";
 
   return (
     <header className="bg-white shadow-md p-6 flex justify-between items-center">
-
       <div className="flex items-center gap-8">
         <Link href="#" className="flex items-center gap-2">
           <Image
-            src="/saign_logo.svg" 
+            src="/saign_logo.svg"
             alt="s[A]ign Logo"
-            width={45} 
-            height={15} 
+            width={45}
+            height={15}
           />
           <span className="text-2xl font-bold text-blue-600">s[AI]gn</span>
         </Link>
@@ -49,6 +48,12 @@ export function Header() {
             href="/leaderboard"
           >
             Leaderboard
+          </Link>
+          <Link
+            className="text-lg text-black font-semibold hover:text-blue-500 transition-colors"
+            href="/game"
+          >
+            Game
           </Link>
 
           {status === "authenticated" && (
@@ -96,7 +101,9 @@ export function Header() {
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuItem
-                onSelect={() => redirect("/") /*signOut({ callbackUrl: "/" }) */}
+                onSelect={
+                  () => redirect("/") /*signOut({ callbackUrl: "/" }) */
+                }
               >
                 <span className="text-sm text-white font-medium bg-black hover:bg-gray-700 transition-colors duration-300 rounded-xl px-3 py-1">
                   Logout
