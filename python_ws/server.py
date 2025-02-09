@@ -8,7 +8,7 @@ import tensorflow as tf
 from io import BytesIO
 
 # Load the saved model
-model_dir = "/Volumes/Passport_HD/columbia-hack-2025/python_ws/american-sign-language-tensorflow2-american-sign-language-v1"
+model_dir = "C:/Users/andrew/Documents/hackathon/columbia-hack-2025/python_ws/american-sign-language-tensorflow2-american-sign-language-v1"
 model = tf.saved_model.load(model_dir)
 
 # Check the model's signatures and output names
@@ -61,7 +61,7 @@ def classify_hand_sign(image_bytes: bytes):
 async def websocket_handler(websocket):
     try:
         async for message in websocket:
-            print("Received message:", message)
+            # print("Received message:", message)
             # Expecting a base64 encoded image
             data = json.loads(message)
             if 'image' in data:
@@ -73,6 +73,7 @@ async def websocket_handler(websocket):
 
                 # Return the predicted sign language letter
                 result = {'predicted_sign': predicted_sign}
+                print(result)
                 await websocket.send(json.dumps(result))
     except Exception as e:
         print(f"Error: {e}")
