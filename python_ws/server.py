@@ -6,12 +6,11 @@ import base64
 import json
 from PIL import Image
 import numpy as np
-import tensorflow as tf
 from io import BytesIO
 import mediapipe as mp
 
 client = Groq(
-    api_key="",
+    api_key="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",
 )
 
 
@@ -79,7 +78,7 @@ def classify_hand_sign(image_bytes: bytes):
             "content": [
                 {
                     "type": "text",
-"text": "ONLY RESPOND WITH THE LETTER, NUMBER, or BASIC OBJECT NOTHING ELSE, DO NOT RESPOND WITH A FULL SENTENCE. USE YOUR BEST GUESS BUT ONLY RESPOND WITH A LETTER OR NUMBER OR BASIC OBJECT NOTHING ELSE"
+"text": "ONLY RESPOND WITH THE LETTER A,B or C NOTHING ELSE, DO NOT RESPOND WITH A FULL SENTENCE. USE YOUR BEST GUESS BUT ONLY RESPOND WITH A LETTER A,B or C NOTHING ELSE EXCEPT UNSURE"
 
                 },
                 {
@@ -112,20 +111,21 @@ async def websocket_handler(websocket):
                 image_data = base64.b64decode(data['image'])
 
                 # Detect and crop hand before classification
-                cropped_image = detect_and_crop_hand(image_data)
-                cropped_image = cropped_image.transpose(Image.FLIP_LEFT_RIGHT)
+                # cropped_image = detect_and_crop_hand(image_data)
+                # cropped_image = cropped_image.transpose(Image.FLIP_LEFT_RIGHT)
                 # Convert the cropped image to base64
-                buffered = BytesIO()
-                cropped_image.save(buffered, format="PNG")
-                cropped_image_base64 = base64.b64encode(buffered.getvalue()).decode("utf-8")
+                # buffered = BytesIO()
+                # cropped_image.save(buffered, format="PNG")
+                # cropped_image_base64 = base64.b64encode(buffered.getvalue()).decode("utf-8")
 
                 # Classify the hand image using the TensorFlow model
-                predicted_sign = classify_hand_sign(cropped_image_base64)
+                predicted_sign = classify_hand_sign(data["image"])
 
                 # Return both the predicted sign and processed image in base64 format
                 result = {
                     'predicted_sign': predicted_sign,
                 }
+                print(result)
                 await websocket.send(json.dumps(result))
     except Exception as e:
         print(f"Error: {e}")

@@ -10,7 +10,12 @@ dotenv.config();
 
 const app = express();
 
-app.use(cors());
+app.use(
+  cors({
+    origin: "http://localhost:3000", // Explicitly allow frontend URL
+    credentials: true, // Allow cookies and authentication headers
+  })
+);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
