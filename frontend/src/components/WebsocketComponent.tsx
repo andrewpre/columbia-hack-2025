@@ -2,7 +2,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 const WebcamComponent = () => {
-  const SEND_TIMER = 6000;
+  const SEND_TIMER = 3000;
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
   const [handImage, setHandImage] = useState(null);
