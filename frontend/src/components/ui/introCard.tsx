@@ -1,5 +1,5 @@
 "use client"
-import React, { useState } from 'react';
+import React, { useState,useEffect,useRef } from 'react';
 
 interface IntroCardProps {
   name: string | undefined;
@@ -15,6 +15,33 @@ const IntroCard: React.FC<IntroCardProps> = ({ name = "", images, increaseIndex,
     setIndex((prev) => (prev + 1));
   };
 
+  const videoRef = useRef(null);
+
+  useEffect(() => {
+    const startWebcam = async () => {
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+        if (videoRef.current) {
+          videoRef.current.srcObject = stream;
+        }
+      } catch (error) {
+        console.error("Error accessing webcam: ", error);
+      }
+    };
+
+    startWebcam();
+
+    // Clean up the webcam stream when the component is unmounted
+    return () => {
+      if (videoRef.current) {
+        const stream = videoRef.current.srcObject;
+        if (stream) {
+          const tracks = stream.getTracks();
+          tracks.forEach((track) => track.stop());
+        }
+      }
+    };
+  }, [index]);
   return (
     <div className="flex flex-col items-center justify-center  rounded-lg text-white h-full w-full">
       {index === 0 && (
@@ -34,7 +61,8 @@ const IntroCard: React.FC<IntroCardProps> = ({ name = "", images, increaseIndex,
         </div>
       )}
 
-      {index === 1 && (
+
+            {index === 1 && (
         <div className="w-full">
           <div className="flex justify-between items-center mb-4" style={{width:"calc(50% + 4.5ch)",marginLeft:"auto"}}>
             <h2 className="text-2xl font-bold text-black">Letter: A</h2>
@@ -44,15 +72,23 @@ const IntroCard: React.FC<IntroCardProps> = ({ name = "", images, increaseIndex,
           <div className="flex flex-col items-center mb-4" style={{ width: 'fit-content',alignSelf: "center" }}>
             {/* Vertical Stepper */}
             <div className="flex flex-col items-start space-y-4">
-              {['A', 'B', 'C'].map((letter, stepIndex) => (
-                <div
-                  key={letter}
-                  className={`flex items-center space-x-4 ${stepIndex === index - 1 ? 'text-green-500' : 'text-gray-500'}`}
-                >
-                  <div className={`w-4 h-4 rounded-full ${stepIndex === index - 1 ? 'bg-green-500' : 'bg-gray-500'}`} />
-                  <span className="text-lg">{letter}</span>
-                </div>
-              ))}
+            {['A', 'B', 'C'].map((letter, stepIndex) => (
+  <div key={letter} className="circle-container">
+    {/* Vertical line connecting the circles */}
+    {stepIndex !== 0 && (
+      <div
+        className={`line ${stepIndex > index - 1 ? 'active' : ''}`}
+      />
+    )}
+    {/* Circle with the letter inside */}
+    <div
+      className={`circle ${stepIndex > index - 1 ? 'bg-green-500' : 'bg-gray-500'}`}
+    >
+      <span className="text-lg text-white">{letter}</span>
+    </div>
+  </div>
+))}
+
             </div>
           </div>
 
@@ -61,8 +97,14 @@ const IntroCard: React.FC<IntroCardProps> = ({ name = "", images, increaseIndex,
     marginRight: "auto",width:"95%"}}
     >
             {/* Webcam View Placeholder */}
-            <div className=" bg-gray-700 rounded-lg flex items-center justify-center text-gray-400" style={{width:"550px", height:'500px'}}>
-              Webcam View
+            <div className=" bg-gray-700 rounded-lg flex items-center justify-center text-gray-400" style={{width:"fit-content", height:'auto'}}>
+            <video
+        ref={videoRef}
+        autoPlay
+        muted
+        style={{ width: "100%", height: "100%" }}
+      ></video>
+
             </div>
           </div>
 </div>
@@ -78,6 +120,129 @@ const IntroCard: React.FC<IntroCardProps> = ({ name = "", images, increaseIndex,
               className="bg-blue-500 text-white px-6 py-1 rounded hover:bg-blue-600 transition-all"
             >
               Next
+            </button>
+          </div>
+        </div>
+      )}
+
+
+
+{index === 2 && (
+        <div className="w-full">
+          <div className="flex justify-between items-center mb-4" style={{width:"calc(50% + 4.5ch)",marginLeft:"auto"}}>
+            <h2 className="text-2xl font-bold text-black">Letter: B</h2>
+            <img src={images[index - 1]} alt="Current letter" className="w-24 h-24 object-cover rounded-lg" />
+          </div>
+          <div style={{display:"flex"}}>
+          <div className="flex flex-col items-center mb-4" style={{ width: 'fit-content',alignSelf: "center" }}>
+            {/* Vertical Stepper */}
+            <div className="flex flex-col items-start space-y-4">
+            {['A', 'B', 'C'].map((letter, stepIndex) => (
+  <div key={letter} className="circle-container">
+    {/* Vertical line connecting the circles */}
+    {stepIndex !== 0 && (
+      <div
+        className={`line ${stepIndex === index - 1 ? 'active' : ''}`}
+      />
+    )}
+    {/* Circle with the letter inside */}
+    <div
+      className={`circle ${stepIndex <= index - 1 ? 'bg-green-500' : 'bg-gray-500'}`}
+    >
+      <span className="text-lg text-white">{letter}</span>
+    </div>
+  </div>
+))}
+
+            </div>
+          </div>
+
+          <div className="flex justify-center items-center mb-4" style={{    alignSelf: "center",
+    alignItems: "center",
+    marginRight: "auto",width:"95%"}}
+    >
+            {/* Webcam View Placeholder */}
+            <div className=" bg-gray-700 rounded-lg flex items-center justify-center text-gray-400" style={{width:"fit-content", height:'auto'}}>
+            <video
+        ref={videoRef}
+        autoPlay
+        muted
+        style={{ width: "100%", height: "100%" }}
+      ></video>
+
+            </div>
+          </div>
+</div>
+          <div className="flex justify-between display-button-width">
+            <button
+              onClick={() => togglePopup()}
+              className="bg-red-500 text-white px-6 py-1 rounded hover:bg-red-700 transition-all"
+            >
+              Close
+            </button>
+            <button
+              onClick={handleIncreaseIndex}
+              className="bg-blue-500 text-white px-6 py-1 rounded hover:bg-blue-600 transition-all"
+            >
+              Next
+            </button>
+          </div>
+        </div>
+      )}
+
+      
+{index === 3 && (
+        <div className="w-full">
+          <div className="flex justify-between items-center mb-4" style={{width:"calc(50% + 4.5ch)",marginLeft:"auto"}}>
+            <h2 className="text-2xl font-bold text-black">Letter: C</h2>
+            <img src={images[index - 1]} alt="Current letter" className="w-24 h-24 object-cover rounded-lg" />
+          </div>
+          <div style={{display:"flex"}}>
+          <div className="flex flex-col items-center mb-4" style={{ width: 'fit-content',alignSelf: "center" }}>
+            {/* Vertical Stepper */}
+            <div className="flex flex-col items-start space-y-4">
+            {['A', 'B', 'C'].map((letter, stepIndex) => (
+  <div key={letter} className="circle-container">
+    {/* Vertical line connecting the circles */}
+    {stepIndex !== 0 && (
+      <div
+        className={`line ${stepIndex === index - 1 ? 'active' : ''}`}
+      />
+    )}
+    {/* Circle with the letter inside */}
+    <div
+      className={`circle ${stepIndex <= index - 1 ? 'bg-green-500' : 'bg-gray-500'}`}
+    >
+      <span className="text-lg text-white">{letter}</span>
+    </div>
+  </div>
+))}
+
+            </div>
+          </div>
+
+          <div className="flex justify-center items-center mb-4" style={{    alignSelf: "center",
+    alignItems: "center",
+    marginRight: "auto",width:"95%"}}
+    >
+            {/* Webcam View Placeholder */}
+            <div className=" bg-gray-700 rounded-lg flex items-center justify-center text-gray-400" style={{width:"fit-content", height:'auto'}}>
+            <video
+        ref={videoRef}
+        autoPlay
+        muted
+        style={{ width: "100%", height: "100%" }}
+      ></video>
+
+            </div>
+          </div>
+</div>
+          <div className="flex justify-between display-button-width">
+            <button
+              onClick={() => togglePopup()}
+              className="bg-red-500 text-white px-6 py-1 rounded hover:bg-red-700 transition-all"
+            >
+              Close
             </button>
           </div>
         </div>

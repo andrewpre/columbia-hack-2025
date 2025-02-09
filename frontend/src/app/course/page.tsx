@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import Dropdown from "@/components/dropdown"; // Now the import should work!
 import UserProfile from "@/components/userprofile";
 import IntroCard from "@/components/ui/introCard";
@@ -22,6 +22,19 @@ export default function Course() {
   const [isActive, setIsActive] = useState<boolean>(false);  // Type the state as boolean
   const [selectedLesson, setSelectedLesson] = useState<Lesson | null>(null);  // Type as Lesson or null
 
+  useEffect(() => {
+    // Disable scrolling when isActive is true
+    if (isActive) {
+      document.body.style.overflowY = "hidden";  // Hide vertical scroll
+    } else {
+      document.body.style.overflowY = "auto";   // Enable vertical scroll
+    }
+
+    // Cleanup function to reset scroll behavior when the component is unmounted or isActive changes
+    return () => {
+      document.body.style.overflowY = "auto";
+    };
+  }, [isActive]);
   // Handle opening and closing the popover
   const togglePopover = () => {
     setIsActive(!isActive);}
@@ -75,9 +88,12 @@ export default function Course() {
     <div className="grid grid-rows-[31fr] sm: font-[family-name:var(--font-geist-sans)]">
       {isActive && (
         <div className="absolute inset-0 flex items-center justify-center z-10" >
+                  <div className="absolute inset-0 flex items-center justify-center z-10">  
           <div className="bg-white p-8 w-[80%] h-[80%] rounded" style={{width:"95%",height:"95%"}}>
             <IntroCard name={selectedLesson?.title} images={['image1.jpg', 'image2.jpg']} togglePopup={togglePopover} />
           </div>
+          </div>
+          <div className="absolute inset-0 flex items-center justify-center z-0 bg-gray-800 bg-opacity-80 overflow-y-hidden"/>
         </div>
       )}
       <UserProfile />
