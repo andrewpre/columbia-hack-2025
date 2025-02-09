@@ -91,7 +91,10 @@ const IntroCard: React.FC<IntroCardProps> = ({
             className="flex justify-between items-center mb-4"
             style={{ width: "calc(50% + 4.5ch)", marginLeft: "auto" }}
           >
-            <h2 className="text-2xl font-bold text-black">Letter: A</h2>
+            <div>
+              <h2 className="text-2xl font-bold text-black">Letter: A</h2>
+              <p className="text-black">Guessing Letter: {guessingLetter}</p>
+            </div>
             <img
               src={images[index - 1].src}
               alt="Current letter"
@@ -173,7 +176,10 @@ const IntroCard: React.FC<IntroCardProps> = ({
             className="flex justify-between items-center mb-4"
             style={{ width: "calc(50% + 4.5ch)", marginLeft: "auto" }}
           >
-            <h2 className="text-2xl font-bold text-black">Letter: B</h2>
+            <div>
+              <h2 className="text-2xl font-bold text-black">Letter: B</h2>
+              <p className="text-black">Guessing Letter: {guessingLetter}</p>
+            </div>
             <img
               src={images[index - 1].src}
               alt="Current letter"
@@ -255,7 +261,10 @@ const IntroCard: React.FC<IntroCardProps> = ({
             className="flex justify-between items-center mb-4"
             style={{ width: "calc(50% + 4.5ch)", marginLeft: "auto" }}
           >
-            <h2 className="text-2xl font-bold text-black">Letter: C</h2>
+            <div>
+              <h2 className="text-2xl font-bold text-black">Letter: C</h2>
+              <p className="text-black">Guessing Letter: {guessingLetter}</p>
+            </div>
             <img
               src={images[index - 1].src}
               alt="Current letter"
