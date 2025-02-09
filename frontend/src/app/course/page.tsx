@@ -5,7 +5,8 @@ import UserProfile from "@/components/userprofile";
 import IntroCard from "@/components/ui/introCard";
 import SignA from '../../Images/Sign_A.png';
 import SignB from '../../Images/Sign_B.png';
-import SignC from "../../Images/Sign_C.png"
+import SignC from "../../Images/Sign_C.png";
+import { getUser } from "../reusableRoutes";
 // Define types for lesson items
 interface Lesson {
   id: number;
@@ -23,7 +24,12 @@ interface Topic {
 export default function Course() {
   const [isActive, setIsActive] = useState<boolean>(false);  // Type the state as boolean
   const [selectedLesson, setSelectedLesson] = useState<Lesson | null>(null);  // Type as Lesson or null
-
+  const [user, setUser] = useState<any>(null);
+  useEffect(() => {
+    getUser().then((data) => {
+      setUser(data);
+    });
+  }, []);
   useEffect(() => {
     // Disable scrolling when isActive is true
     if (isActive) {
@@ -102,7 +108,7 @@ export default function Course() {
           <div className="absolute inset-0 flex items-center justify-center z-0 bg-gray-800 bg-opacity-80 overflow-y-hidden"/>
         </div>
       )}
-      <UserProfile />
+     {user!=undefined && <UserProfile user={user}/>}
       <main className="flex flex-col justify-between mt-2 gap-1 bg-gray-100 row-start-2 items-center sm:items-start w-full">
         {topics.map((topic, idx) => (
           <Dropdown

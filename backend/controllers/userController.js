@@ -106,6 +106,7 @@ export const loginUser = asyncHandler(async (req, res) => {
 
 // ✅ Get User Profile
 export const getUser = asyncHandler(async (req, res) => {
+  console.log(req.params.id);
   const user = await User.findById(req.params.id);
 
   if (!user) {
