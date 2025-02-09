@@ -77,12 +77,12 @@ const IntroCard: React.FC<IntroCardProps> = ({ name = "", images, increaseIndex,
     {/* Vertical line connecting the circles */}
     {stepIndex !== 0 && (
       <div
-        className={`line ${stepIndex > index - 1 ? 'active' : ''}`}
+        className={`line ${stepIndex <= index - 1 ? 'active' : ''}`}
       />
     )}
     {/* Circle with the letter inside */}
     <div
-      className={`circle ${stepIndex > index - 1 ? 'bg-green-500' : 'bg-gray-500'}`}
+      className={`circle ${stepIndex <= index - 1 ? 'bg-green-500' : 'bg-gray-500'}`}
     >
       <span className="text-lg text-white">{letter}</span>
     </div>
@@ -206,7 +206,7 @@ const IntroCard: React.FC<IntroCardProps> = ({ name = "", images, increaseIndex,
     {/* Vertical line connecting the circles */}
     {stepIndex !== 0 && (
       <div
-        className={`line ${stepIndex === index - 1 ? 'active' : ''}`}
+        className={`line ${stepIndex <= index - 1 ? 'active' : ''}`}
       />
     )}
     {/* Circle with the letter inside */}

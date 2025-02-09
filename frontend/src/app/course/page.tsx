@@ -26,10 +26,11 @@ export default function Course() {
     // Disable scrolling when isActive is true
     if (isActive) {
       document.body.style.overflowY = "hidden";  // Hide vertical scroll
+      window.scrollTo(0, 0);  // Force the page to the top
     } else {
       document.body.style.overflowY = "auto";   // Enable vertical scroll
     }
-
+  
     // Cleanup function to reset scroll behavior when the component is unmounted or isActive changes
     return () => {
       document.body.style.overflowY = "auto";
