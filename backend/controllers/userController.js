@@ -1,5 +1,6 @@
 import asyncHandler from "express-async-handler";
 import User from "../models/user.js";
+import bcrypt from "bcryptjs";
 
 // ✅ Register User
 export const registerUser = asyncHandler(async (req, res) => {
@@ -21,6 +22,9 @@ export const registerUser = asyncHandler(async (req, res) => {
     res.status(400);
     throw new Error("Username is already taken. Please choose another one.");
   }
+
+  const salt = await bcrypt.genSalt(10);
+  const hashedPassword = await bcrypt.hash(password, salt);
 
   try {
     const user = await User.create({
@@ -44,8 +48,18 @@ export const registerUser = asyncHandler(async (req, res) => {
       },
       completedTrophies: {},
     });
+    res.setHeader(
+      "Set-Cookie",
+      `userId=${user._id.toString()}; Path=/; HttpOnly; SameSite=Strict`
+    );
 
-    res.status(201).json({ userId: user._id });
+    // res.cookie("userId", user._id.toString(), {
+    //   httpOnly: true, // Prevents client-side JavaScript access
+    //   secure: process.env.NODE_ENV === "production", // Only HTTPS in production
+    //   sameSite: "Strict", // Prevents CSRF attacks
+    //   maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+    // });
+    res.status(201).json({ message: user._id.toString() });
   } catch (error) {
     res.status(500).json({
       message: "Server error. Could not register user.",
@@ -65,12 +79,28 @@ export const loginUser = asyncHandler(async (req, res) => {
 
   const user = await User.findOne({ email });
 
-  if (!user || !(await user.matchPassword(password))) {
+  if (!user) {
     res.status(401);
     throw new Error("Invalid email or password");
   }
 
-  res.status(200).json({ userId: user._id });
+  const isMatch = await user.matchPassword(password);
+
+  if (!isMatch) {
+    res.status(401);
+    throw new Error("Invalid email or password");
+  }
+  res.setHeader(
+    "Set-Cookie",
+    `userId=${user._id.toString()}; Path=/; HttpOnly; SameSite=Strict`
+  );
+  // res.cookie("userId", user._id.toString(), {
+  //   httpOnly: true, // Prevents client-side JavaScript access
+  //   secure: process.env.NODE_ENV === "production", // Only HTTPS in production
+  //   sameSite: "Strict", // Prevents CSRF attacks
+  //   maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+  // });
+  res.status(200).json({ message: user._id.toString() });
 });
 
 // ✅ Get User Profile

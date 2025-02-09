@@ -1,6 +1,5 @@
 "use client";
 
-import { useSession, signOut, signIn } from "next-auth/react";
 import Link from "next/link";
 import { User, Settings } from "lucide-react";
 import { Button } from "./ui/button";
@@ -12,10 +11,27 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { redirect } from "next/navigation";
 import Image from "next/image";
+import { useState, useEffect } from "react";
 
 export function Header() {
-  const status = "unauthenticated";
+  const [userId, setUserId] = useState("");
+  useEffect(() => {
+    // Check if userId exists in localStorage on component mount
+    const storedUserId = localStorage.getItem("userId");
+    if (storedUserId !== null) {
+      setUserId(storedUserId);
+    }
+  }, []);
 
+  const [status, setStatus] = useState("unauthenticated");
+
+  useEffect(() => {
+    if (userId !== "") {
+      setStatus("athenticated"); // If authenticated, set to null or another value
+    } else {
+      setStatus("unauthenticated");
+    }
+  }, [userId]);
   return (
     <header className="bg-white shadow-md p-6 flex justify-between items-center">
       <div className="flex items-center gap-8">
@@ -72,13 +88,13 @@ export function Header() {
           <>
             <Button
               className="px-8 py-2 border border-blue-500 text-blue-500 text-lg font-semibold rounded-full hover:bg-blue-100"
-              onClick={() => redirect("/") /*signIn()*/}
+              onClick={() => redirect("/sign-in") /*signIn()*/}
             >
               Login
             </Button>
             <Button
               className="px-8 py-2 bg-blue-500 text-white text-lg font-semibold rounded-full hover:bg-blue-600"
-              onClick={() => redirect("/") /*signIn()*/}
+              onClick={() => redirect("/sign-up") /*signIn()*/}
             >
               Sign Up
             </Button>
@@ -102,7 +118,10 @@ export function Header() {
               </DropdownMenuItem>
               <DropdownMenuItem
                 onSelect={
-                  () => redirect("/") /*signOut({ callbackUrl: "/" }) */
+                  () =>
+                    localStorage.removeItem(
+                      "userId"
+                    ) /*signOut({ callbackUrl: "/" }) */
                 }
               >
                 <span className="text-sm text-white font-medium bg-black hover:bg-gray-700 transition-colors duration-300 rounded-xl px-3 py-1">
