@@ -1,5 +1,6 @@
 import asyncHandler from "express-async-handler";
 import User from "../models/user.js";
+import bcrypt from "bcryptjs";
 
 // ✅ Register User
 export const registerUser = asyncHandler(async (req, res) => {
@@ -21,6 +22,9 @@ export const registerUser = asyncHandler(async (req, res) => {
     res.status(400);
     throw new Error("Username is already taken. Please choose another one.");
   }
+
+  const salt = await bcrypt.genSalt(10);
+  const hashedPassword = await bcrypt.hash(password, salt);
 
   try {
     const user = await User.create({
@@ -65,7 +69,14 @@ export const loginUser = asyncHandler(async (req, res) => {
 
   const user = await User.findOne({ email });
 
-  if (!user || !(await user.matchPassword(password))) {
+  if (!user) {
+    res.status(401);
+    throw new Error("Invalid email or password");
+  }
+
+  const isMatch = await user.matchPassword(password);
+
+  if (!isMatch) {
     res.status(401);
     throw new Error("Invalid email or password");
   }

@@ -4,6 +4,7 @@ import cors from "cors";
 import { connect } from "./database/connect.js";
 import cookieParser from "cookie-parser";
 import userRoutes from "./routes/userRoutes.js";
+import leaderboardRoutes from "./routes/leaderboardRoutes.js";
 
 dotenv.config();
 
@@ -15,6 +16,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 app.use("/api/user", userRoutes);
+app.use("/api/leaderboard", leaderboardRoutes);
 
 const startServer = async () => {
   try {
