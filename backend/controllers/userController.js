@@ -1,7 +1,7 @@
 import asyncHandler from "express-async-handler";
 import User from "../models/user.js";
 
-// Register User
+// ✅ Register User
 export const registerUser = asyncHandler(async (req, res) => {
   const { email, password, username } = req.body;
 
@@ -29,27 +29,18 @@ export const registerUser = asyncHandler(async (req, res) => {
       dateCreated: new Date(),
       level: 1,
       currentXp: 0,
-      completedTopics: {},
-      trophies: {},
+      trophies: new Map(),
+      completedTrophies: new Map(),
     });
 
-    res.status(201).json({
-      _id: user.id,
-      email: user.email,
-      username: user.username,
-      dateCreated: user.dateCreated,
-      level: user.level,
-      currentXp: user.currentXp,
-      completedTopics: user.completedTopics,
-      trophies: user.trophies,
-    });
+    res.status(201).json(user);
   } catch (error) {
     res.status(500);
     throw new Error("Server error. Could not register user.");
   }
 });
 
-// Login User
+// ✅ Login User
 export const loginUser = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
 
@@ -65,19 +56,180 @@ export const loginUser = asyncHandler(async (req, res) => {
     throw new Error("Invalid email or password");
   }
 
+  res.status(200).json(user);
+});
+
+// ✅ Get User Profile
+export const getUser = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.params.id);
+
+  if (!user) {
+    res.status(404);
+    throw new Error("User not found");
+  }
+
   res.status(200).json({
-    _id: user.id,
+    _id: user._id,
     email: user.email,
     username: user.username,
-    dateCreated: user.dateCreated,
     level: user.level,
     currentXp: user.currentXp,
-    completedTopics: user.completedTopics,
-    trophies: user.trophies,
+    trophies: user.trophies, // ✅ Full list of trophies
+    completedTrophies: user.completedTrophies, // ✅ Only earned trophies
+    dateCreated: user.dateCreated,
+    createdAt: user.createdAt,
+    updatedAt: user.updatedAt,
   });
 });
 
-// Logout User
+// ✅ Logout User
 export const logoutUser = asyncHandler(async (req, res) => {
   res.status(200).json({ message: "User logged out successfully" });
+});
+
+// ✅ Function to calculate XP needed for next level
+export const calculateXpForNextLevel = (level) => {
+  return Math.floor(100 * Math.pow(1.1, level - 1));
+};
+
+// ✅ Function to check & award trophies automatically
+export const checkForTrophies = async (user) => {
+  let updated = false;
+
+  const trophyConditions = {
+    "Novice Learner": Object.keys(user.completedTrophies).length >= 5,
+    "Advanced Scholar": Object.keys(user.completedTrophies).length >= 10,
+    "Level 5 Achiever": user.level >= 5,
+    "Level 10 Master": user.level >= 10,
+    "XP Champion": user.currentXp >= 500,
+  };
+
+  for (const [trophy, condition] of Object.entries(trophyConditions)) {
+    if (condition && !user.completedTrophies[trophy]) {
+      user.completedTrophies[trophy] = true;
+      user.trophies[trophy] = true;
+      updated = true;
+    }
+  }
+
+  if (updated) {
+    await user.save();
+  }
+};
+
+// ✅ Add XP to User & Handle Leveling
+export const addXpToUser = asyncHandler(async (req, res) => {
+  const { xpEarned } = req.body;
+  const user = await User.findById(req.params.id);
+
+  if (!user) {
+    res.status(404);
+    throw new Error("User not found");
+  }
+
+  user.currentXp += xpEarned;
+  let xpForNextLevel = calculateXpForNextLevel(user.level);
+
+  while (user.currentXp >= xpForNextLevel) {
+    user.currentXp -= xpForNextLevel;
+    user.level += 1;
+    xpForNextLevel = calculateXpForNextLevel(user.level);
+  }
+
+  await checkForTrophies(user);
+
+  const updatedUser = await user.save();
+  res.status(200).json(updatedUser);
+});
+
+// ✅ Add Trophy to User and award XP
+export const addTrophy = asyncHandler(async (req, res) => {
+  const { trophyName, xpEarned } = req.body;
+  const user = await User.findById(req.params.id);
+
+  if (!user) {
+    res.status(404);
+    throw new Error("User not found");
+  }
+
+  const validTrophies = [
+    "Intro to Sign Language",
+    "Finger Spelling",
+    "Basic Phrases",
+    "Numbers & Counting",
+    "Common Gestures",
+    "Novice Learner",
+    "Advanced Scholar",
+    "Level 5 Achiever",
+    "Level 10 Master",
+    "XP Champion",
+  ];
+
+  if (
+    !trophyName ||
+    typeof trophyName !== "string" ||
+    trophyName.trim() === "" ||
+    !validTrophies.includes(trophyName.trim())
+  ) {
+    res.status(400);
+    throw new Error("Invalid trophy name. Trophy does not exist.");
+  }
+
+  const trophyKey = trophyName.trim();
+
+  user.trophies = user.trophies || new Map();
+  user.completedTrophies = user.completedTrophies || new Map();
+
+  if (user.completedTrophies.get(trophyKey)) {
+    return res.status(200).json({
+      message: "Trophy already earned",
+      user,
+    });
+  }
+
+  user.trophies.set(trophyKey, true);
+  user.completedTrophies.set(trophyKey, true);
+  user.currentXp += xpEarned;
+
+  let xpForNextLevel = calculateXpForNextLevel(user.level);
+  while (user.currentXp >= xpForNextLevel) {
+    user.currentXp -= xpForNextLevel;
+    user.level += 1;
+    xpForNextLevel = calculateXpForNextLevel(user.level);
+  }
+
+  await checkForTrophies(user);
+
+  const updatedUser = await user.save();
+  res.status(200).json(updatedUser);
+});
+
+// ✅ Update User Profile
+export const updateUserProfile = asyncHandler(async (req, res) => {
+  const { username } = req.body;
+  const user = await User.findById(req.params.id);
+
+  if (!user) {
+    res.status(404);
+    throw new Error("User not found");
+  }
+
+  if (username) {
+    user.username = username;
+  }
+
+  const updatedUser = await user.save();
+
+  res.status(200).json({
+    _id: updatedUser._id,
+    email: updatedUser.email,
+    username: updatedUser.username,
+    level: updatedUser.level,
+    currentXp: updatedUser.currentXp,
+    trophies: updatedUser.trophies,
+    completedTrophies: updatedUser.completedTrophies,
+    dateCreated: updatedUser.dateCreated,
+    createdAt: updatedUser.createdAt,
+    updatedAt: updatedUser.updatedAt,
+  });
 });
