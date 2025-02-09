@@ -1,6 +1,7 @@
 import React from 'react';
 import Progress from './ui/progress';
 import Card from './ui/card';
+import ContinueCard from './ui/continueCard';
 // import CardContent from './ui/cardcontent';
 import { CircleUserRound } from 'lucide-react';
 
@@ -10,9 +11,9 @@ import { CircleUserRound } from 'lucide-react';
 
 const UserProfile: React.FC = () => {
   return (
-    <div className="bg-blue-500 p-8 text-white grid grid-cols-3 gap-8">
+    <div className="bg-blue-500 text-white grid grid-cols-3 gap-8">
       {/* Left Section */}
-      <div className="col-span-2">
+      <div className="col-span-2" style={{alignContent:'center'}}>
         <div className="flex items-center gap-4">
           <div className="relative">
             <Card className="w-32 h-32 flex items-center justify-center">
@@ -33,31 +34,17 @@ const UserProfile: React.FC = () => {
                   21
                 </div>
               </div>
-              <Card className="w-32 h-16 flex items-center justify-center">
-            <span className="text-black">Daily Streak</span>
-          </Card>
+
             </div>
           </div>
+
+        </div>
         </div>
 
-        <div className="mt-6">
-          <h3 className="text-xl font-bold mb-2">Recently Earned Achievements:</h3>
-          <div className="flex gap-4">
-            {Array(5).fill('Achievement').map((ach, index) => (
-              <Card key={index} className="w-24 h-24 flex items-center justify-center">
-                <span className="text-black text-center">{ach}</span>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </div>
 
       {/* Right Section */}
       <div>
-        <h3 className="text-xl font-bold mb-2">Continue Learning:</h3>
-        <Card className="w-full h-64 flex items-center justify-center">
-          <span className="text-black">Content Placeholder</span>
-        </Card>
+        <ContinueCard title="Topic 1: Alphabet Signing" lesson="Lesson 1: A B C" />
       </div>
     </div>
   );
