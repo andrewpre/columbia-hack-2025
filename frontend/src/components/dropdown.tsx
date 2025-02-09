@@ -1,4 +1,5 @@
 "use client";
+
 import { useState } from "react";
 
 interface DropdownProps {
@@ -10,10 +11,10 @@ export default function Dropdown({ title, lessons = [] }: DropdownProps) {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div className="w-full">
+    <div className="w-full sm:w-[900px] mx-auto">
       {/* Dropdown Header */}
       <button
-        className="w-full bg-orange-500 text-white text-lg font-semibold py-3 px-4 flex justify-between items-center"
+        className="w-full bg-[#FF5733] text-white text-lg font-semibold py-4 px-4 flex justify-between items-center"
         onClick={() => setIsOpen(!isOpen)}
       >
         {title}
@@ -36,9 +37,10 @@ export default function Dropdown({ title, lessons = [] }: DropdownProps) {
                     lesson.completed ? "bg-blue-500" : "bg-red-500"
                   }`}
                 ></span>
-                {lesson.title}
+                <span className="font-bold">{lesson.title}</span> {/* Bold lesson title */}
+
               </span>
-              <button className="bg-blue-500 text-white px-4 py-1 rounded-md">
+              <button className="bg-blue-500 text-white px-6 py-1 rounded hover:bg-blue-600 transition-all">
                 Begin
               </button>
             </div>
