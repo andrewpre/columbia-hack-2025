@@ -79,3 +79,7 @@
   right: -5px;
   z-index: 1;
  }
+ .display-button-width{
+  width: 50%;
+  margin:auto;
+ }

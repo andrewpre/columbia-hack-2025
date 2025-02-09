@@ -13,7 +13,7 @@ client = Groq(
     api_key="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",
 )
 
-
+possibilities = ""
 # Initialize MediaPipe Hands
 mp_hands = mp.solutions.hands
 hands = mp_hands.Hands(
@@ -71,14 +71,14 @@ def preprocess_image(image_data: bytes):
 # Function to classify the hand sign
 def classify_hand_sign(image_bytes: bytes):
     completion = client.chat.completions.create(
-    model="llama-3.2-11b-vision-preview",
+    model="llama-3.2-90b-vision-preview",
     messages=[
         {
             "role": "user",
             "content": [
                 {
                     "type": "text",
-"text": "ONLY RESPOND WITH THE LETTER A,B or C NOTHING ELSE, DO NOT RESPOND WITH A FULL SENTENCE. USE YOUR BEST GUESS BUT ONLY RESPOND WITH A LETTER A,B or C NOTHING ELSE EXCEPT UNSURE"
+"text": "Classify the sign language gesture based on ASL interpretation. Respond only with {possibilities} corresponding to the sign. If unsure, respond with 'UNSURE'. Do not provide any additional explanation or sentences."
 
                 },
                 {
@@ -106,6 +106,8 @@ async def websocket_handler(websocket):
 
             # Expecting a base64 encoded image
             data = json.loads(message)
+            if 'lookingFor' in data:
+                possibilities = data['lookingFor']
             if 'image' in data:
                 # Decode the base64 image data
                 image_data = base64.b64decode(data['image'])
