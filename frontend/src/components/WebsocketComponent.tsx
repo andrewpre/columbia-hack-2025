@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
-const WebcamComponent = () => {
+const WebcamComponent = ({ letter }) => {
   const SEND_TIMER = 3000;
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
@@ -14,6 +14,10 @@ const WebcamComponent = () => {
 
     wsRef.current.onmessage = (event) => {
       const data = JSON.parse(event.data);
+      const firstLetter = data.predicted_sign.charAt(0);
+      if (firstLetter === letter) {
+      }
+      console.log("firstl", firstLetter);
       if (data.hand_image) {
         setHandImage(data.hand_image);
       } else if (data.error) {
@@ -51,14 +55,17 @@ const WebcamComponent = () => {
       context.drawImage(videoRef.current, 0, 0, 640, 480);
       const imageData = canvasRef.current.toDataURL("image/jpeg", 0.8);
       const base64Image = imageData.split(",")[1];
-
-      wsRef.current.send(JSON.stringify({ image: base64Image }));
+      wsRef.current.send(
+        JSON.stringify({ image: base64Image, lookingFor: letter })
+      );
     }
   };
 
   return (
-    <div className="border-4 border-black w-[300px] h-[300px]">
+    // <></>
+    <div className="border-4 border-black hidden">
       <video ref={videoRef} style={{ display: "none" }} />
+      {letter}
       <canvas
         className="border-4 border-black"
         ref={canvasRef}
@@ -69,8 +76,8 @@ const WebcamComponent = () => {
       {handImage && (
         <Image
           className="border-4 border-black"
-          width={500}
-          height={500}
+          width={1}
+          height={1}
           src={`data:image/png;base64,${handImage}`}
           alt="Processed hand"
         />

@@ -275,7 +275,7 @@ export const addTrophy = asyncHandler(async (req, res) => {
   user.completedTrophies.set(trophyKey, true);
   user.currentXp += xpEarned;
 
-  let xpForNextLevel = user.level*15;
+  let xpForNextLevel = user.level * 15;
   while (user.currentXp >= xpForNextLevel) {
     user.currentXp -= xpForNextLevel;
     user.level += 1;
