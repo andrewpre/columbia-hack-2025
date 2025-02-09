@@ -34,6 +34,7 @@ export const registerUser = asyncHandler(async (req, res) => {
       dateCreated: new Date(),
       level: 1,
       currentXp: 0,
+      dailyStreak: 5,
       trophies: {
         "Intro to Sign Language": false,
         "Finger Spelling": false,
