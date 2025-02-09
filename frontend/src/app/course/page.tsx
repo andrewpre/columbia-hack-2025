@@ -3,7 +3,9 @@ import { useState,useEffect } from "react";
 import Dropdown from "@/components/dropdown"; // Now the import should work!
 import UserProfile from "@/components/userprofile";
 import IntroCard from "@/components/ui/introCard";
-
+import SignA from '../../Images/Sign_A.png';
+import SignB from '../../Images/Sign_B.png';
+import SignC from "../../Images/Sign_C.png"
 // Define types for lesson items
 interface Lesson {
   id: number;
@@ -94,7 +96,7 @@ export default function Course() {
         <div className="absolute inset-0 flex items-center justify-center z-10" >
                   <div className="absolute inset-0 flex items-center justify-center z-10">  
           <div className="bg-white p-8 w-[80%] h-[80%] rounded" style={{width:"95%",height:"95%"}}>
-            <IntroCard name={selectedLesson?.title} images={['image1.jpg', 'image2.jpg']} togglePopup={togglePopover} />
+            <IntroCard name={selectedLesson?.title} images={[SignA,SignB,SignC]} togglePopup={togglePopover} />
           </div>
           </div>
           <div className="absolute inset-0 flex items-center justify-center z-0 bg-gray-800 bg-opacity-80 overflow-y-hidden"/>

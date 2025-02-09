@@ -3,13 +3,12 @@ import React, { useState,useEffect,useRef } from 'react';
 
 interface IntroCardProps {
   name: string | undefined;
-  images: string[];
   increaseIndex: () => void;
 }
 
+
 const IntroCard: React.FC<IntroCardProps> = ({ name = "", images, increaseIndex,togglePopup }) => {
   const [index, setIndex] = useState<number>(0);
-
   const handleIncreaseIndex = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     setIndex((prev) => (prev + 1));
@@ -49,7 +48,8 @@ const IntroCard: React.FC<IntroCardProps> = ({ name = "", images, increaseIndex,
     <div className="flex flex-col items-center justify-between space-y-4 flex-grow"> {/* Ensure the children are evenly spaced */}
       <div className="flex space-x-4 mb-4">
         {images.map((image, idx) => (
-          <img key={idx} src={image} alt={`Letter ${String.fromCharCode(65 + idx)}`} className="w-32 h-32 object-cover rounded-lg" />
+          <img key={idx} src={image.src} alt={`Letter ${String.fromCharCode(65 + idx)}`} className="h-32 rounded-lg object-contain"
+/>
         ))}
       </div>
       <h2 className="text-2xl font-bold text-black">Letters: A B C</h2>
@@ -71,7 +71,7 @@ const IntroCard: React.FC<IntroCardProps> = ({ name = "", images, increaseIndex,
         <div className="w-full">
           <div className="flex justify-between items-center mb-4" style={{width:"calc(50% + 4.5ch)",marginLeft:"auto"}}>
             <h2 className="text-2xl font-bold text-black">Letter: A</h2>
-            <img src={images[index - 1]} alt="Current letter" className="w-24 h-24 object-cover rounded-lg" />
+            <img src={images[index - 1].src} alt="Current letter" className=" h-24 object-cover rounded-lg" />
           </div>
           <div style={{display:"flex"}}>
           <div className="flex flex-col items-center mb-4" style={{ width: 'fit-content',alignSelf: "center" }}>
@@ -136,7 +136,7 @@ const IntroCard: React.FC<IntroCardProps> = ({ name = "", images, increaseIndex,
         <div className="w-full">
           <div className="flex justify-between items-center mb-4" style={{width:"calc(50% + 4.5ch)",marginLeft:"auto"}}>
             <h2 className="text-2xl font-bold text-black">Letter: B</h2>
-            <img src={images[index - 1]} alt="Current letter" className="w-24 h-24 object-cover rounded-lg" />
+            <img src={images[index - 1].src} alt="Current letter" className=" h-24 object-cover rounded-lg" />
           </div>
           <div style={{display:"flex"}}>
           <div className="flex flex-col items-center mb-4" style={{ width: 'fit-content',alignSelf: "center" }}>
@@ -200,7 +200,7 @@ const IntroCard: React.FC<IntroCardProps> = ({ name = "", images, increaseIndex,
         <div className="w-full">
           <div className="flex justify-between items-center mb-4" style={{width:"calc(50% + 4.5ch)",marginLeft:"auto"}}>
             <h2 className="text-2xl font-bold text-black">Letter: C</h2>
-            <img src={images[index - 1]} alt="Current letter" className="w-24 h-24 object-cover rounded-lg" />
+            <img src={images[index - 1].src} alt="Current letter" className="h-24 object-cover rounded-lg" />
           </div>
           <div style={{display:"flex"}}>
           <div className="flex flex-col items-center mb-4" style={{ width: 'fit-content',alignSelf: "center" }}>
