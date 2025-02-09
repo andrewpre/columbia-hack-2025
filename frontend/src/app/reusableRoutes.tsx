@@ -31,4 +31,22 @@ export const getUser = async () => {
   }
 };
 
+export const addUserXp = async () => {
+  console.log(userId)
+
+      try {
+        const response = await axios.post(`http://localhost:9000/api/user/${userId}/add-xp`,{xpEarned:10},{
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+        return response.data;
+      } catch (error) {
+        console.error('Error posting data:', error);
+        throw error;
+      }
+};
+
+
+
 // You can add more API functions here as needed and export them

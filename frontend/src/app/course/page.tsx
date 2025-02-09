@@ -6,7 +6,7 @@ import IntroCard from "@/components/ui/introCard";
 import SignA from '../../Images/Sign_A.png';
 import SignB from '../../Images/Sign_B.png';
 import SignC from "../../Images/Sign_C.png";
-import { getUser } from "../reusableRoutes";
+import { getUser,addUserXp } from "../reusableRoutes";
 // Define types for lesson items
 interface Lesson {
   id: number;
@@ -29,6 +29,10 @@ export default function Course() {
     getUser().then((data) => {
       setUser(data);
     });
+    addUserXp().then((data) => {
+      console.log(data);
+    });
+
   }, []);
   useEffect(() => {
     // Disable scrolling when isActive is true

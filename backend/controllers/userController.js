@@ -181,6 +181,7 @@ export const checkForTrophies = async (user) => {
 // ✅ Add XP to User & Handle Leveling
 export const addXpToUser = asyncHandler(async (req, res) => {
   const { xpEarned } = req.body;
+  console.log(req.body);
   const user = await User.findById(req.params.id);
 
   if (!user) {
@@ -274,7 +275,7 @@ export const addTrophy = asyncHandler(async (req, res) => {
   user.completedTrophies.set(trophyKey, true);
   user.currentXp += xpEarned;
 
-  let xpForNextLevel = calculateXpForNextLevel(user.level);
+  let xpForNextLevel = user.level*15;
   while (user.currentXp >= xpForNextLevel) {
     user.currentXp -= xpForNextLevel;
     user.level += 1;

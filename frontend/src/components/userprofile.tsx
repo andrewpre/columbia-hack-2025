@@ -35,7 +35,7 @@ const UserProfile: React.FC = ({user}) => {
             <h2 className="text-2xl font-bold">{user.username||"Demo User"}</h2>
             <p className="text-sm">{formattedDate}</p>
             <div className="flex items-center gap-2 mt-2 text-md font-bold">
-              <span>{user.currentXp}/100 Exp</span>
+              <span>{user.currentXp}/{user.level*15} Exp</span>
               <div className="relative w-40">
                 <Progress value={50} className="h-2 bg-gray-300" />
                 <div className="absolute progress-bar-level-position bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold">
