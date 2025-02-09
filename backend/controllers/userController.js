@@ -139,7 +139,7 @@ export const logoutUser = asyncHandler(async (req, res) => {
 
 // ✅ Calculate XP needed for next level with progressive scaling
 export const calculateXpForNextLevel = (level) => {
-  return Math.floor(50 + level * 50 * Math.pow(1.15, level - 1));
+  return level * 15;
 };
 
 // ✅ Function to check & award trophies automatically
