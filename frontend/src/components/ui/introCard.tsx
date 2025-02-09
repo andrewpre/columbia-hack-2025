@@ -44,22 +44,27 @@ const IntroCard: React.FC<IntroCardProps> = ({ name = "", images, increaseIndex,
   }, [index]);
   return (
     <div className="flex flex-col items-center justify-center  rounded-lg text-white h-full w-full">
-      {index === 0 && (
-        <div className="flex flex-col items-center">
-          <h2 className="text-2xl font-bold mb-4 text-black">Letters: A B C</h2>
-          <div className="flex space-x-4 mb-4">
-            {images.map((image, idx) => (
-              <img key={idx} src={image} alt={`Letter ${String.fromCharCode(65 + idx)}`} className="w-32 h-32 object-cover rounded-lg" />
-            ))}
-          </div>
-          <button
-            onClick={handleIncreaseIndex}
-            className="bg-blue-500 text-white py-2 px-6 rounded-lg hover:bg-blue-700 transition duration-300"
-          >
-            Start
-          </button>
-        </div>
-      )}
+{index === 0 && (
+  <div className="flex flex-col items-center justify-between h-full">  {/* Full height and space between */}
+    <div className="flex flex-col items-center justify-between space-y-4 flex-grow"> {/* Ensure the children are evenly spaced */}
+      <div className="flex space-x-4 mb-4">
+        {images.map((image, idx) => (
+          <img key={idx} src={image} alt={`Letter ${String.fromCharCode(65 + idx)}`} className="w-32 h-32 object-cover rounded-lg" />
+        ))}
+      </div>
+      <h2 className="text-2xl font-bold text-black">Letters: A B C</h2>
+
+      <button
+        onClick={handleIncreaseIndex}
+        className="bg-blue-500 text-white py-2 px-6 rounded-lg hover:bg-blue-700 transition duration-300"
+      >
+        Start
+      </button>
+    </div>
+  </div>
+)}
+
+
 
 
             {index === 1 && (

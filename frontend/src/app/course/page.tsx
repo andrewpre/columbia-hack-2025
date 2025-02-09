@@ -101,7 +101,7 @@ export default function Course() {
         </div>
       )}
       <UserProfile />
-      <main className="flex flex-col mt-2 gap-1 bg-gray-100 row-start-2 items-center sm:items-start w-full">
+      <main className="flex flex-col justify-between mt-2 gap-1 bg-gray-100 row-start-2 items-center sm:items-start w-full">
         {topics.map((topic, idx) => (
           <Dropdown
             key={idx}
