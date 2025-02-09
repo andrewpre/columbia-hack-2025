@@ -124,14 +124,21 @@ export const logoutUser = asyncHandler(async (req, res) => {
   res.status(200).json({ message: "User logged out successfully" });
 });
 
-// ✅ Function to calculate XP needed for next level
+// ✅ Calculate XP needed for next level with progressive scaling
 export const calculateXpForNextLevel = (level) => {
-  return Math.floor(100 * Math.pow(1.1, level - 1));
+  return Math.floor(50 + level * 50 * Math.pow(1.15, level - 1));
 };
 
 // ✅ Function to check & award trophies automatically
 export const checkForTrophies = async (user) => {
   let updated = false;
+
+  if (!user.trophies) user.trophies = {};
+  if (!user.completedTrophies) user.completedTrophies = {};
+
+  console.log(
+    `🟡 Checking trophies for User: ${user.username} (Level: ${user.level})`
+  );
 
   const trophyConditions = {
     "Novice Learner": Object.keys(user.completedTrophies).length >= 5,
@@ -143,6 +150,7 @@ export const checkForTrophies = async (user) => {
 
   for (const [trophy, condition] of Object.entries(trophyConditions)) {
     if (condition && !user.completedTrophies[trophy]) {
+      console.log(`🏆 Awarding trophy: ${trophy} to ${user.username}`);
       user.completedTrophies[trophy] = true;
       user.trophies[trophy] = true;
       updated = true;
@@ -151,6 +159,9 @@ export const checkForTrophies = async (user) => {
 
   if (updated) {
     await user.save();
+    console.log(`✅ Trophies Updated in DB:`, user.completedTrophies);
+  } else {
+    console.log(`⚠️ No new trophies awarded.`);
   }
 };
 
@@ -164,18 +175,40 @@ export const addXpToUser = asyncHandler(async (req, res) => {
     throw new Error("User not found");
   }
 
+  console.log(
+    `🟡 Adding XP: ${xpEarned} to User: ${user.username} (Current XP: ${user.currentXp}, Level: ${user.level})`
+  );
+
   user.currentXp += xpEarned;
   let xpForNextLevel = calculateXpForNextLevel(user.level);
+  let leveledUp = false;
 
   while (user.currentXp >= xpForNextLevel) {
     user.currentXp -= xpForNextLevel;
     user.level += 1;
     xpForNextLevel = calculateXpForNextLevel(user.level);
+    leveledUp = true;
+    console.log(`🔼 User leveled up! New Level: ${user.level}`);
   }
 
   await checkForTrophies(user);
 
-  const updatedUser = await user.save();
+  const updatedUser = await User.findByIdAndUpdate(
+    user._id,
+    {
+      $set: {
+        level: user.level,
+        currentXp: user.currentXp,
+        trophies: user.trophies,
+        completedTrophies: user.completedTrophies,
+      },
+    },
+    { new: true }
+  );
+
+  console.log(
+    `✅ Final User State: Level: ${updatedUser.level}, XP: ${updatedUser.currentXp}`
+  );
   res.status(200).json(updatedUser);
 });
 
