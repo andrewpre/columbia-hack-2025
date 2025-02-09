@@ -14,24 +14,30 @@ import Image from "next/image";
 import { useState, useEffect } from "react";
 
 export function Header() {
-  const [userId, setUserId] = useState("");
-  useEffect(() => {
-    // Check if userId exists in localStorage on component mount
-    const storedUserId = localStorage.getItem("userId");
-    if (storedUserId !== null) {
-      setUserId(storedUserId);
-    }
-  }, []);
 
-  const [status, setStatus] = useState("unauthenticated");
-
+  const [userId, setUserId] = useState<string | null>(localStorage.getItem("userId"));
+  const [status, setStatus] = useState<"authenticated" | "unauthenticated">(userId ? "authenticated" : "unauthenticated");
   useEffect(() => {
-    if (userId !== "") {
-      setStatus("athenticated"); // If authenticated, set to null or another value
-    } else {
+    // Event listener for when localStorage changes
+    const handleStorageChange = (event: StorageEvent) => {
+      if (event.key === "userId") {
+        setUserId(event.newValue);
+        setStatus("authenticated");
+      }
       setStatus("unauthenticated");
-    }
-  }, [userId]);
+    };
+
+    // Adding the event listener when the component mounts
+    window.addEventListener('storage', handleStorageChange);
+
+    // Cleanup the event listener when the component unmounts
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+    };
+  }, []); // Empty dependency array to only run on mount/unmount
+
+
+
   return (
     <header className="bg-white shadow-md p-6 flex justify-between items-center">
       <div className="flex items-center gap-8">
