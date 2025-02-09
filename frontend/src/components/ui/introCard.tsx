@@ -12,6 +12,7 @@ const IntroCard: React.FC<IntroCardProps> = ({
   increaseIndex,
   togglePopup,
   setCurrLetter,
+  guessingLetter,
 }) => {
   const [index, setIndex] = useState<number>(0);
   const handleIncreaseIndex = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -54,6 +55,7 @@ const IntroCard: React.FC<IntroCardProps> = ({
   }, [index]);
   return (
     <div className="flex flex-col items-center justify-center  rounded-lg text-white h-full w-full">
+      Guessing Letter: {guessingLetter}
       {index === 0 && (
         <div className="flex flex-col items-center justify-between h-full">
           {" "}
@@ -83,7 +85,6 @@ const IntroCard: React.FC<IntroCardProps> = ({
           </div>
         </div>
       )}
-
       {index === 1 && (
         <div className="w-full">
           <div
@@ -166,7 +167,6 @@ const IntroCard: React.FC<IntroCardProps> = ({
           </div>
         </div>
       )}
-
       {index === 2 && (
         <div className="w-full">
           <div
@@ -249,7 +249,6 @@ const IntroCard: React.FC<IntroCardProps> = ({
           </div>
         </div>
       )}
-
       {index === 3 && (
         <div className="w-full">
           <div

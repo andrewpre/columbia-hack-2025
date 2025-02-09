@@ -1,8 +1,9 @@
 "use client";
 import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
-const WebcamComponent = ({ letter }) => {
-  const SEND_TIMER = 3000;
+import { addUserXp } from "@/app/reusableRoutes";
+const WebcamComponent = ({ letter, guessingLetter }) => {
+  const SEND_TIMER = 500;
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
   const [handImage, setHandImage] = useState(null);
@@ -12,12 +13,14 @@ const WebcamComponent = ({ letter }) => {
     // Set up WebSocket connection
     wsRef.current = new WebSocket("ws://localhost:8000/ws");
 
-    wsRef.current.onmessage = (event) => {
+    wsRef.current.onmessage = async (event) => {
       const data = JSON.parse(event.data);
       const firstLetter = data.predicted_sign.charAt(0);
       if (firstLetter === letter) {
+        await addUserXp();
       }
-      console.log("firstl", firstLetter);
+      console.log("Guessing Letter:", firstLetter);
+      guessingLetter(firstLetter);
       if (data.hand_image) {
         setHandImage(data.hand_image);
       } else if (data.error) {

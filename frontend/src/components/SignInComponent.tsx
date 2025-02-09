@@ -7,12 +7,11 @@ const SignInForm = () => {
   const router = useRouter();
   useEffect(() => {
     // Check if the user is already authenticated
-    const userId = localStorage.getItem("userId");
-
-    // If userId exists, redirect to home page
-    if (userId) {
-      router.push("/"); // or the appropriate home page route
-    }
+    // const userId = localStorage.getItem("userId");
+    // // If userId exists, redirect to home page
+    // if (userId) {
+    //   router.push("/"); // or the appropriate home page route
+    // }
   }, [router]);
   const [formData, setFormData] = useState({
     email: "",
@@ -31,7 +30,7 @@ const SignInForm = () => {
     setError("");
 
     try {
-      console.log("Signing in with:", formData);
+      // console.log("Signing in with:", formData);
 
       const response = await fetch("http://localhost:9000/api/user/login", {
         method: "POST",
@@ -42,7 +41,7 @@ const SignInForm = () => {
 
       const data = await response.json();
       if (response.ok) {
-        console.log("✅ Login successful!", data);
+        // console.log("✅ Login successful!", data);
         localStorage.setItem("userId", data.message);
 
         // Store token if needed

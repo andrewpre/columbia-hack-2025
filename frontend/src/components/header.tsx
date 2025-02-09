@@ -14,9 +14,10 @@ import Image from "next/image";
 import { useState, useEffect } from "react";
 
 export function Header() {
-
-  const [userId, setUserId] = useState<string | null>(localStorage.getItem("userId"));
-  const [status, setStatus] = useState<"authenticated" | "unauthenticated">(userId ? "authenticated" : "unauthenticated");
+  const [userId, setUserId] = useState<string | null>(null); //localStorage.getItem("userId")
+  const [status, setStatus] = useState<"authenticated" | "unauthenticated">(
+    userId ? "authenticated" : "unauthenticated"
+  );
   useEffect(() => {
     // Event listener for when localStorage changes
     const handleStorageChange = (event: StorageEvent) => {
@@ -28,15 +29,13 @@ export function Header() {
     };
 
     // Adding the event listener when the component mounts
-    window.addEventListener('storage', handleStorageChange);
+    window.addEventListener("storage", handleStorageChange);
 
     // Cleanup the event listener when the component unmounts
     return () => {
-      window.removeEventListener('storage', handleStorageChange);
+      window.removeEventListener("storage", handleStorageChange);
     };
   }, []); // Empty dependency array to only run on mount/unmount
-
-
 
   return (
     <header className="bg-white shadow-md p-6 flex justify-between items-center">
@@ -65,18 +64,18 @@ export function Header() {
           >
             Course
           </Link>
-          <Link
+          {/* <Link
             className="text-lg text-black font-semibold hover:text-blue-500 transition-colors"
             href="/leaderboard"
           >
             Leaderboard
-          </Link>
-          <Link
+          </Link> */}
+          {/* <Link
             className="text-lg text-black font-semibold hover:text-blue-500 transition-colors"
             href="/game"
           >
             Game
-          </Link>
+          </Link> */}
 
           {status === "authenticated" && (
             <Link

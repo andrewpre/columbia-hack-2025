@@ -78,7 +78,7 @@ def classify_hand_sign(image_bytes: bytes):
             "content": [
                 {
                     "type": "text",
-"text": "Classify the sign language gesture based on ASL interpretation. Respond only with {possibilities} corresponding to the sign. If unsure, respond with 'UNSURE'. Do not provide any additional explanation or sentences."
+"text": "ONLY RESPOND WITH THE LETTER A,B or C NOTHING ELSE, DO NOT RESPOND WITH A FULL SENTENCE. USE YOUR BEST GUESS BUT ONLY RESPOND WITH A LETTER A,B or C NOTHING ELSE EXCEPT UNSURE"
 
                 },
                 {

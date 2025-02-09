@@ -6,12 +6,11 @@ const SignUpForm = () => {
   const router = useRouter();
   useEffect(() => {
     // Check if the user is already authenticated
-    const userId = localStorage.getItem("userId");
-
+    // const userId = localStorage.getItem("userId");
     // If userId exists, redirect to home page
-    if (userId) {
-      router.push("/"); // or the appropriate home page route
-    }
+    // if (userId) {
+    //   router.push("/"); // or the appropriate home page route
+    // }
   }, [router]);
   const [formData, setFormData] = useState({
     username: "",
@@ -33,7 +32,7 @@ const SignUpForm = () => {
     setSuccess("");
 
     try {
-      console.log(formData);
+      // console.log(formData);
       const response = await fetch("http://localhost:9000/api/user/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },

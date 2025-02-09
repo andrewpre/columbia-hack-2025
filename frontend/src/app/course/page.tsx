@@ -23,9 +23,8 @@ interface Topic {
 }
 
 export default function Course() {
-  const [isActive, setIsActive] = useState<boolean>(false); // Type the state as boolean
-  const [selectedLesson, setSelectedLesson] = useState<Lesson | null>(null); // Type as Lesson or null
   const [user, setUser] = useState<any>(null);
+  const [guessingLetter, setGuessingLetter] = useState<any>("A");
   useEffect(() => {
     getUser().then((data) => {
       setUser(data);
@@ -52,7 +51,7 @@ export default function Course() {
     };
   }, [isActive]);
   useEffect(() => {
-    console.log("CURR LETTER CHANGED", currLetter);
+    // console.log("CURR LETTER CHANGED", currLetter);
   }, [currLetter, setCurrLetter]);
   // Handle opening and closing the popover
   const togglePopover = () => {
@@ -197,7 +196,7 @@ export default function Course() {
   ];
   return (
     <div className="grid grid-rows-[31fr] sm: font-[family-name:var(--font-geist-sans)]">
-      <WebcamComponent letter={currLetter} />
+      <WebcamComponent letter={currLetter} guessingLetter={setGuessingLetter} />
 
       {isActive && (
         <div className="absolute inset-0 flex items-center justify-center z-10">
@@ -211,6 +210,7 @@ export default function Course() {
                 images={[SignA, SignB, SignC]}
                 togglePopup={togglePopover}
                 setCurrLetter={setCurrLetter}
+                guessingLetter={guessingLetter}
               />
             </div>
           </div>
