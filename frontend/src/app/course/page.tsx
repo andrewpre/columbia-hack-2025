@@ -1,9 +1,10 @@
 import Dropdown from "@/components/dropdown"; // Now the import should work!
-
+import UserProfile from "@/components/userprofile";
 export default function Course() {
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-1 row-start-2 items-center sm:items-start w-full">
+    <div className="grid grid-rows-[31fr]  sm: font-[family-name:var(--font-geist-sans)]">
+      <UserProfile />
+      <main className="flex flex-col gap-1 bg-gray-100 row-start-2 items-center sm:items-start w-full">
         <Dropdown
           title="Topic 1: Alphabet Signing"
           lessons={[

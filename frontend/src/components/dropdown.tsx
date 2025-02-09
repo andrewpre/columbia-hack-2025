@@ -11,10 +11,10 @@ export default function Dropdown({ title, lessons = [] }: DropdownProps) {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div className="w-full sm:w-[900px] mx-auto">
+    <div className="w-full">
       {/* Dropdown Header */}
       <button
-        className="w-full bg-[#FF5733] text-white text-lg font-semibold py-4 px-4 flex justify-between items-center"
+        className="w-full bg-[#FF5733] text-white text-xl font-semibold py-4 px-4 flex justify-between items-center"
         onClick={() => setIsOpen(!isOpen)}
       >
         {title}
@@ -25,11 +25,12 @@ export default function Dropdown({ title, lessons = [] }: DropdownProps) {
 
       {/* Dropdown Content */}
       {isOpen && (
-        <div className="bg-gray-100 border border-gray-300">
+        <div className="bg-gray-100 ">
           {lessons.map((lesson) => (
+            <div key={lesson.id} className="border border-gray-300 mb-4 mt-4 mx-auto" style={{width: "90%"}}>
             <div
-              key={lesson.id}
-              className="flex justify-between items-center p-4 border-b border-gray-300"
+              
+              className="flex justify-between items-center p-4"
             >
               <span className="flex items-center gap-2">
                 <span
@@ -44,7 +45,9 @@ export default function Dropdown({ title, lessons = [] }: DropdownProps) {
                 Begin
               </button>
             </div>
+            </div>
           ))}
+          
         </div>
       )}
     </div>

@@ -70,3 +70,12 @@
     @apply bg-background text-foreground;
   }
 } */
+ .overlap-user-level{
+  top:6px;
+  left:10px;
+ }
+ .progress-bar-level-position {
+  top: -8px;
+  right: -5px;
+  z-index: 1;
+ }
