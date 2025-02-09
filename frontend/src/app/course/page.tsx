@@ -40,6 +40,9 @@ export default function Course() {
   const togglePopover = () => {
     setIsActive(!isActive);}
 
+    const allLessonsCompleted = (lessons: Lesson[]) => {
+      return lessons.every(lesson => lesson.completed);
+    };
   // Array of Topics and Lessons
   const topics: Topic[] = [
     {
@@ -106,6 +109,7 @@ export default function Course() {
             title={topic.title}
             lessons={topic.lessons}
             togglePopover={(e)=>togglePopover(e)}
+            allLessonsCompleted={allLessonsCompleted(topic.lessons)}
             
           />
         ))}

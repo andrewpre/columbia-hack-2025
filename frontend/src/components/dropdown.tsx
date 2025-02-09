@@ -13,25 +13,26 @@ interface DropdownProps {
   togglePopover: () => void;
 }
 
-export default function Dropdown({ title, lessons,setSelectedLesson,togglePopover }: DropdownProps) {
+export default function Dropdown({ title, lessons,setSelectedLesson,togglePopover,allLessonsCompleted }: DropdownProps) {
   const [isOpen, setIsOpen] = useState(false);
   const btnClicked = (e,lesson:typeof lessons) =>{
     e.preventDefault();
     setSelectedLesson(lesson)
     togglePopover()
   }
+  const backgroundColor = allLessonsCompleted ? "bg-blue-500" : "bg-[#FF5733]";
   return (
     <div className="w-full">
       {/* Dropdown Header */}
       <button
-        className="w-full bg-[#FF5733] text-white text-xl font-semibold py-4 px-4 flex justify-between items-center"
-        onClick={() => setIsOpen(!isOpen)}
-      >
-        {title}
-        <span className={`${isOpen ? "rotate-180" : ""} transition-transform`}>
-          ▼
-        </span>
-      </button>
+  className={`w-full ${backgroundColor} text-white text-xl font-semibold py-4 px-4 flex justify-between items-center`}
+  onClick={() => setIsOpen(!isOpen)}
+>
+  {title}
+  <span className={`${isOpen ? "rotate-180" : ""} transition-transform`}>
+    ▼
+  </span>
+</button>
 
       {/* Dropdown Content */}
       {isOpen && (

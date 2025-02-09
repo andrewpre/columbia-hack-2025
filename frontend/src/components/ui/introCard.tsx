@@ -237,7 +237,7 @@ const IntroCard: React.FC<IntroCardProps> = ({ name = "", images, increaseIndex,
             </div>
           </div>
 </div>
-          <div className="flex justify-between display-button-width">
+          <div className="flex justify-between" style={{width:"fit-content", margin:'auto'}}>
             <button
               onClick={() => togglePopup()}
               className="bg-red-500 text-white px-6 py-1 rounded hover:bg-red-700 transition-all"
