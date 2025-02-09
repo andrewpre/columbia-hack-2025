@@ -24,7 +24,7 @@ interface Topic {
 
 export default function Course() {
   const [user, setUser] = useState<any>(null);
-  const [guessingLetter, setGuessingLetter] = useState<any>("A");
+  const [guessingLetter, setGuessingLetter] = useState<any>("");
   useEffect(() => {
     getUser().then((data) => {
       setUser(data);
